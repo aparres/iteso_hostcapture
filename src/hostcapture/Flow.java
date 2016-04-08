@@ -35,8 +35,89 @@ public class Flow {
 
     @Override
     public String toString() {
-        return "Flow{" + "hashID=" + hashID + ", farIP=" + farIP + ", protocol=" + protocol + ", port=" + port + ", ts_first_packet=" + ts_first_packet + ", ts_last_packet=" + ts_last_packet + ", int_name=" + int_name + ", int_hw=" + int_hw + ", packet_count=" + packet_count + ", bytes=" + bytes + '}';
+        return "{" + "hashID=" + hashID + ", farIP=" + farIP + ", protocol=" + protocol + ", port=" + port + ", ts_first_packet=" + ts_first_packet + ", ts_last_packet=" + ts_last_packet + ", int_name=" + int_name + ", int_hw=" + int_hw + ", packet_count=" + packet_count + ", bytes=" + bytes + '}';
     }
+
+    public int getHashID() {
+        return hashID;
+    }
+
+    public String getFarIP() {
+        return farIP;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public long getTs_first_packet() {
+        return ts_first_packet;
+    }
+
+    public long getTs_last_packet() {
+        return ts_last_packet;
+    }
+
+    public String getInt_name() {
+        return int_name;
+    }
+
+    public String getInt_hw() {
+        return int_hw;
+    }
+
+    public long getPacket_count() {
+        return packet_count;
+    }
+
+    public long getBytes() {
+        return bytes;
+    }
+
+    public void setHashID(int hashID) {
+        this.hashID = hashID;
+    }
+
+    public void setFarIP(String farIP) {
+        this.farIP = farIP;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setTs_first_packet(long ts_first_packet) {
+        this.ts_first_packet = ts_first_packet;
+    }
+
+    public void setTs_last_packet(long ts_last_packet) {
+        this.ts_last_packet = ts_last_packet;
+    }
+
+    public void setInt_name(String int_name) {
+        this.int_name = int_name;
+    }
+
+    public void setInt_hw(String int_hw) {
+        this.int_hw = int_hw;
+    }
+
+    public void setPacket_count(long packet_count) {
+        this.packet_count = packet_count;
+    }
+
+    public void setBytes(long bytes) {
+        this.bytes = bytes;
+    }
+
 
     
 

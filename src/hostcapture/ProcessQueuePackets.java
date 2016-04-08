@@ -31,7 +31,7 @@ import org.jnetpcap.protocol.tcpip.Udp;
 public class ProcessQueuePackets implements Runnable {
 
     private final LinkedBlockingQueue<PacketQueueElement> queue;
-    private Map<Integer,Flow> flows = new HashMap();
+    private FlowMap flows = new FlowMap();
 
     private class ProcessPacketShutDownHook implements Runnable {
 
@@ -156,6 +156,8 @@ public class ProcessQueuePackets implements Runnable {
         }
         
         Flow flow = new Flow(flowID,farIP,protocol,port,ts,ts,element.getDev().getName(),mac,1,bytes);
-        System.out.println(flow.toString());
+        flows.add(flow);
+        
+        System.out.println(flows.toString());
     }
 }
