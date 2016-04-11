@@ -15,9 +15,11 @@ import java.util.Map;
 public class FlowMap {
     
     private Map<Integer,Flow> flows;
+    private double count;
 
     public FlowMap() {
         this.flows = new HashMap();
+        this.count = 0;
     }
 
     public long add(Flow flow){
@@ -33,8 +35,35 @@ public class FlowMap {
             return ActualFlow.getPacket_count();
         } else {
             flows.put(flow.getHashID(), flow);
+            this.count++;
             return 1;
         }
+    }
+    
+    public double count() {
+        return this.count;
+    }
+    
+    public double getTsRange() {
+        double minTS = 0;
+        double maxTS = 0;
+            
+
+        for(Flow flow : flows.values()) {
+            if(minTS == 0) {
+                minTS = flow.getTs_first_packet();
+                maxTS = flow.getTs_last_packet();
+                continue;
+            }
+            
+            minTS = (flow.getTs_first_packet() < minTS ) ? flow.getTs_first_packet() : minTS;
+            maxTS = (flow.getTs_last_packet() > maxTS ) ? flow.getTs_last_packet() : maxTS;
+        }
+ 
+            
+        return (maxTS - minTS)/1000;
+                
+                
     }
 
     @Override
@@ -46,6 +75,18 @@ public class FlowMap {
         }
         return line;
     }
+
+    public String toSCV() {
+        return this.toSCV(",");
+    }
     
+    public String toSCV(String sep) {
+        String line = new String();
+        
+        for(Flow flow : flows.values()) {
+           line += flow.toString(sep) + "\n";
+        }
     
+        return line;
+    }    
 }

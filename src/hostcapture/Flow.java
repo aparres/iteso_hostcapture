@@ -19,6 +19,8 @@ public class Flow {
     private String int_hw;
     private long packet_count;
     private long bytes;
+    
+    public static final int ROWSIZE = 180;
 
     public Flow(int hashID, String farIP, String protocol, int port, long ts_first_packet, long ts_last_packet, String int_name, String int_hw, long packet_count, long bytes) {
         this.hashID = hashID;
@@ -35,9 +37,14 @@ public class Flow {
 
     @Override
     public String toString() {
-        return "{" + "hashID=" + hashID + ", farIP=" + farIP + ", protocol=" + protocol + ", port=" + port + ", ts_first_packet=" + ts_first_packet + ", ts_last_packet=" + ts_last_packet + ", int_name=" + int_name + ", int_hw=" + int_hw + ", packet_count=" + packet_count + ", bytes=" + bytes + '}';
+        return "{" + "hashID=" + String.format("%x",hashID) + ", farIP=" + farIP + ", protocol=" + protocol + ", port=" + port + ", ts_first_packet=" + ts_first_packet + ", ts_last_packet=" + ts_last_packet + ", int_name=" + int_name + ", int_hw=" + int_hw + ", packet_count=" + packet_count + ", bytes=" + bytes + '}';
     }
 
+    public String toString(String sep) {
+        return String.format("%x",hashID) + sep + farIP + sep + protocol + sep + port + sep + ts_first_packet + sep + 
+                ts_last_packet + sep + int_name + sep + int_hw + sep + packet_count + sep + bytes;
+    }
+    
     public int getHashID() {
         return hashID;
     }

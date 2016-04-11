@@ -19,6 +19,12 @@ public class Config {
         Properties def = new Properties();
         
         def.setProperty("device", "ALL");
+        def.setProperty("tsRange", "3600");
+        def.setProperty("FilePath", "");
+        def.setProperty("FileBaseName", "flows");
+        def.setProperty("FileMaxSize", "10240"); 
+        
+        def.setProperty("CountFlowsWriteToFile", "100"); 
         return def;
     }
     
@@ -32,5 +38,13 @@ public class Config {
     
     static public String getDevice() {
         return config.getProperty("device");
+    }
+    
+    static public double getTSRange() {
+        return Double.parseDouble(config.getProperty("tsRange"));
+    }
+    
+    static public String getConfig(String key) {
+        return config.getProperty(key);
     }
 }
