@@ -25,14 +25,17 @@ public class FlowMap {
     public long add(Flow flow){
         
         if(flows.containsKey(flow.getHashID())) {
-            Flow ActualFlow = flows.get(flow.getHashID());
+           /* Flow ActualFlow = flows.get(flow.getHashID());
             ActualFlow.setPacket_count(ActualFlow.getPacket_count() + flow.getPacket_count());
             ActualFlow.setBytes(ActualFlow.getBytes() + flow.getBytes());
-            ActualFlow.setTs_last_packet(flow.getTs_first_packet());
+            ActualFlow.setTs_last_packet(flow.getTs_first_packet());*/
             
-            flows.replace(ActualFlow.getHashID(), ActualFlow);
+            Flow FlowFromMap = flows.get(flow.getHashID());
+            FlowFromMap.add(flow);
             
-            return ActualFlow.getPacket_count();
+            flows.replace(FlowFromMap.getHashID(), FlowFromMap);
+            
+            return FlowFromMap.getPacket_count();
         } else {
             flows.put(flow.getHashID(), flow);
             this.count++;

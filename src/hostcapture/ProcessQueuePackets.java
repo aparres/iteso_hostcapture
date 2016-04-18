@@ -17,10 +17,12 @@ import java.util.logging.Logger;
 import org.jnetpcap.PcapAddr;
 import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.format.FormatUtils;
+import org.jnetpcap.packet.structure.JField;
 import org.jnetpcap.protocol.lan.Ethernet;
 import org.jnetpcap.protocol.lan.Ethernet.EthernetType;
 import org.jnetpcap.protocol.network.Ip4;
 import org.jnetpcap.protocol.network.Ip6;
+import org.jnetpcap.protocol.tcpip.Http;
 import org.jnetpcap.protocol.tcpip.Tcp;
 import org.jnetpcap.protocol.tcpip.Udp;
 
@@ -160,8 +162,32 @@ public class ProcessQueuePackets implements Runnable {
         } else {
             return;
         }
-
-        Flow flow = new Flow(flowID, farIP, protocol, port, ts, ts, element.getDev().getName(), mac, 1, bytes);
+        
+        /* Start testing for HTTP and get URL */
+        
+        String http_host = null;
+        String http_method = null;
+        String http_url = null;
+        String http_useragent = null;
+        String http_contenttype = null;
+        String http_response = null;
+        Http http = new Http();
+        if(p.hasHeader(http)) {
+            if(http.isResponse()==false) {
+                http_host = http.fieldValue(Http.Request.Host);
+                http_method = http.fieldValue(Http.Request.RequestMethod);
+                http_url = http.fieldValue(Http.Request.RequestUrl);
+                http_useragent = http.fieldValue(Http.Request.User_Agent);
+            } else {
+                http_contenttype = http.fieldValue(Http.Response.Content_Type);
+                http_response = http.fieldValue(Http.Response.ResponseCode)+" "+http.fieldValue(Http.Response.ResponseCodeMsg);
+            }
+        }
+        
+        Flow flow = new Flow(flowID, farIP, protocol, port, ts, ts, element.getDev().getName(), mac, 1, bytes,http_host,http_method,http_url,http_useragent,http_contenttype,http_response);
+        
+        System.out.println(flow.toString(","));
+        
         flows.add(flow);
 
         if (flows.count() >= Double.valueOf(Config.getConfig("CountFlowsWriteToFile"))) {
