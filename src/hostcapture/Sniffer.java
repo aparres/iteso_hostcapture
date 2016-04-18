@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.jnetpcap.Pcap;
 import org.jnetpcap.PcapIf;
-import org.jnetpcap.packet.PcapPacket;
 
 /**
  *

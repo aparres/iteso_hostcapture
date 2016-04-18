@@ -19,7 +19,6 @@ public class Config {
         Properties def = new Properties();
         
         def.setProperty("device", "ALL");
-        def.setProperty("tsRange", "3600");
         def.setProperty("FilePath", "");
         def.setProperty("FileBaseName", "flows");
         def.setProperty("FileMaxSize", "10240"); 

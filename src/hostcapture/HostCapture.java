@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import org.jnetpcap.PcapAddr;
 import org.jnetpcap.PcapIf;
 import org.jnetpcap.packet.format.FormatUtils;
@@ -15,7 +16,7 @@ import org.jnetpcap.packet.format.FormatUtils;
  *
  * @author parres
  */
-public class HostCapture {
+public class HostCapture extends JFrame {
 
     ArrayList<Thread> sniffer_threads_list;
     LinkedBlockingQueue<PacketQueueElement> pkt_queue;
@@ -28,6 +29,8 @@ public class HostCapture {
     public void startHostCapture() {
             String dev_config = Config.getDevice();
             Sniffer sniffer;
+            
+            initUI();
             
             Thread  t = new Thread(new ProcessQueuePackets(pkt_queue));
             t.start();
@@ -113,10 +116,17 @@ public class HostCapture {
         return devices.get(device);
     }  
     
+    public void initUI() {
+        setTitle("HostCapture");
+        setSize(100,100);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+    
     public static void main(String[] args) {
             HostCapture hc = new HostCapture();
 
-            Config.loadConfig("C:\\Users\\parres\\Documents\\NetBeansProjects\\HostCapture\\src\\config.properties");
+            Config.loadConfig("config.properties");
             hc.startHostCapture();
     }
     
