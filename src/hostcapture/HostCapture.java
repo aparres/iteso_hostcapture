@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jnetpcap.PcapAddr;
 import org.jnetpcap.PcapIf;
-import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.format.FormatUtils;
 
 /**
