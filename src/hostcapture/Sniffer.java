@@ -13,6 +13,7 @@ import org.jnetpcap.PcapIf;
 public class Sniffer implements Runnable {
     PcapIf device;
     String device_name;
+    int device_index;
     Pcap pcap;
     LinkedBlockingQueue<PacketQueueElement> pkt_queue;
 
@@ -38,30 +39,30 @@ public class Sniffer implements Runnable {
         }
     }
     
-    public Sniffer(PcapIf _device, LinkedBlockingQueue<PacketQueueElement> _pkt_queue) {
+            
+    public Sniffer(PcapIf _device, LinkedBlockingQueue<PacketQueueElement> _pkt_queue, int index) {
         device = _device;
         device_name = device.getName();
         pkt_queue = _pkt_queue;
+        device_index = index;
     }
-    
-    public Sniffer(String _device_name, LinkedBlockingQueue<PacketQueueElement> _pkt_queue) {
 
+    public Sniffer(String _device_name, LinkedBlockingQueue<PacketQueueElement> _pkt_queue, int index) {
+        this((PcapIf)null,_pkt_queue, index);
+        
         for(PcapIf dev : Sniffer.getInterfacesName()) {
             if(dev.getName().equals(_device_name)) {
                 device = dev;
             }
         }
-        
-        device_name = _device_name;
-        pkt_queue = _pkt_queue;
     }
-
+    
     public void startSniffer() {
         int snaplen = 64 * 1024;           // Capture all packets, no truncation  
         int flags = Pcap.MODE_PROMISCUOUS; // capture all packets  
         int timeout = 10 * 1000;           // 10 seconds in millis  
         StringBuilder errbuf = new StringBuilder();
-        packetHandler handler = new packetHandler(device);
+        packetHandler handler = new packetHandler(device,device_index);
 
         pcap = Pcap.openLive(device_name, snaplen, flags, timeout, errbuf);
         if (pcap == null) {  

@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import org.jnetpcap.PcapAddr;
 import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.format.FormatUtils;
-import org.jnetpcap.packet.structure.JField;
 import org.jnetpcap.protocol.lan.Ethernet;
 import org.jnetpcap.protocol.lan.Ethernet.EthernetType;
 import org.jnetpcap.protocol.network.Ip4;
@@ -36,6 +35,8 @@ public class ProcessQueuePackets implements Runnable {
     private FlowMap flows = new FlowMap();
     private int fileCounter;
     private String filename;
+    private double packetCounter;
+    private double flowCounter;
 
     private class ProcessPacketShutDownHook implements Runnable {
 
@@ -58,6 +59,8 @@ public class ProcessQueuePackets implements Runnable {
     public ProcessQueuePackets(LinkedBlockingQueue<PacketQueueElement> _queue) {
         this.queue = _queue;
         this.fileCounter = 1;
+        this.packetCounter = 0;
+        this.flowCounter = 0;
 
         String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.filename = String.format("%s\\%s-%s", Config.getConfig("FilePath"), Config.getConfig("FileBaseName"), date);
@@ -187,12 +190,15 @@ public class ProcessQueuePackets implements Runnable {
         Flow flow = new Flow(flowID, farIP, protocol, port, ts, ts, element.getDev().getName(), mac, 1, bytes,http_host,http_method,http_url,http_useragent,http_contenttype,http_response);
         
         System.out.println(flow.toString(","));
-        
         flows.add(flow);
+        HostCapture.getFrame().getInterfacesTable().getModel().setValueAt(this.packetCounter++, element.getDevice_index(), 2);
+        
+        HostCapture.getFrame().getInterfacesTable().getModel().setValueAt(flows.count()+this.flowCounter, element.getDevice_index(), 3);
 
         if (flows.count() >= Double.valueOf(Config.getConfig("CountFlowsWriteToFile"))) {
             FlowMap copyFlows;
             copyFlows = flows;
+            this.flowCounter += flows.count();
             flows = new FlowMap();
 
             try {

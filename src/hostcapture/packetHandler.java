@@ -17,14 +17,16 @@ import org.jnetpcap.packet.PcapPacketHandler;
 public class packetHandler implements PcapPacketHandler<LinkedBlockingQueue<PacketQueueElement>> {
 
     PcapIf device;
+    int index;
     
     @Override
     public void nextPacket(PcapPacket jp, LinkedBlockingQueue<PacketQueueElement> pk_queue) {
         PcapPacket p = new PcapPacket(jp);
-        pk_queue.offer(new PacketQueueElement(device,p));
+        pk_queue.offer(new PacketQueueElement(device,p,index));
     }
 
-    public packetHandler(PcapIf _device) {
+    public packetHandler(PcapIf _device, int _index) {
         device = _device;
+        index = _index;
     }
 }  
