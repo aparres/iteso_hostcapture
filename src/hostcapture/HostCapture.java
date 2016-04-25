@@ -133,7 +133,19 @@ public class HostCapture {
     }
     
     public static void main(String[] args) {
-        Config.loadConfig("src/config.properties");
+
+        String configFile = "config.properties";
+        
+        if(args.length > 0) {
+            for(int i = 0; i < args.length; i++) {
+                if(args[i].compareTo("-c")==0) {
+                    configFile = args[i+1];
+                    i++;
+                }
+            }
+        }
+        
+        Config.loadConfig(configFile);
 
         HostCapture hc = new HostCapture();
         hc.startHostCapture();
