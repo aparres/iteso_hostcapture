@@ -21,15 +21,10 @@ public class FlowMap {
         this.flows = new HashMap();
         this.count = 0;
     }
-
+    
     public long add(Flow flow){
         
         if(flows.containsKey(flow.getHashID())) {
-           /* Flow ActualFlow = flows.get(flow.getHashID());
-            ActualFlow.setPacket_count(ActualFlow.getPacket_count() + flow.getPacket_count());
-            ActualFlow.setBytes(ActualFlow.getBytes() + flow.getBytes());
-            ActualFlow.setTs_last_packet(flow.getTs_first_packet());*/
-            
             Flow FlowFromMap = flows.get(flow.getHashID());
             FlowFromMap.add(flow);
             

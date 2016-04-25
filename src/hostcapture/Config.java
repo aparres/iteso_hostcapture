@@ -22,8 +22,9 @@ public class Config {
         def.setProperty("FilePath", "");
         def.setProperty("FileBaseName", "flows");
         def.setProperty("FileMaxSize", "10240"); 
-        
         def.setProperty("CountFlowsWriteToFile", "100"); 
+        def.setProperty("user", "unkown"); 
+        
         return def;
     }
     

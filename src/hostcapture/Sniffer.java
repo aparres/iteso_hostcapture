@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.jnetpcap.Pcap;
+import org.jnetpcap.PcapAddr;
 import org.jnetpcap.PcapIf;
 
 /**
@@ -34,7 +35,7 @@ public class Sniffer implements Runnable {
             if(pcap != null) {
                 pcap.breakloop();
                 pcap.close();
-                System.out.println("PCAP LOOP Ended");
+                System.out.println("\tPCAP LOOP Ended");
             }
         }
     }
@@ -50,11 +51,7 @@ public class Sniffer implements Runnable {
     public Sniffer(String _device_name, LinkedBlockingQueue<PacketQueueElement> _pkt_queue, int index) {
         this((PcapIf)null,_pkt_queue, index);
         
-        for(PcapIf dev : Sniffer.getInterfacesName()) {
-            if(dev.getName().equals(_device_name)) {
-                device = dev;
-            }
-        }
+        device = getDeviceFromName(_device_name);
     }
     
     public void startSniffer() {
@@ -75,7 +72,7 @@ public class Sniffer implements Runnable {
         pcap.loop(Pcap.LOOP_INFINITE, handler, pkt_queue); 
     }
     
-    public static List<PcapIf> getInterfacesName() {
+    public static List<PcapIf> getInterfaces() {
         List<PcapIf> alldevs = new ArrayList<>(); 
         StringBuilder errbuf = new StringBuilder();     // For any error msgs  
         int r;
@@ -90,4 +87,23 @@ public class Sniffer implements Runnable {
         return alldevs;
     }
     
+    public static PcapIf getDeviceFromName(String deviceName) {
+        PcapIf device = null;
+        
+        for(PcapIf dev : Sniffer.getInterfaces()) {
+            if(dev.getName().equals(deviceName)) {
+                device = dev;
+            }
+        }
+        
+        return device;
+    }
+    
+    public static List<PcapAddr> getIPAddressFromDeviceName(String deviceName) {
+       PcapIf device = getDeviceFromName(deviceName);
+       return device.getAddresses();
+    }
+
+    
 }
+   
