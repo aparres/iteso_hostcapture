@@ -15,10 +15,12 @@ import org.jnetpcap.packet.PcapPacket;
 public class PacketQueueElement {
     private PcapIf dev;
     private PcapPacket packet;
+    private int device_index;
 
-    public PacketQueueElement(PcapIf _dev, PcapPacket _packet) {
+    public PacketQueueElement(PcapIf _dev, PcapPacket _packet, int _device_index) {
         this.dev = _dev;
         this.packet = _packet;
+        this.device_index = _device_index;
     }
     
     public PcapIf getDev() {
@@ -35,5 +37,10 @@ public class PacketQueueElement {
     public void setPacket(PcapPacket packet) {
         this.packet = packet;
     }
+
+    public int getDevice_index() {
+        return device_index;
+    }
+    
     
 }
