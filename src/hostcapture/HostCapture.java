@@ -3,7 +3,6 @@ package hostcapture;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,7 +72,6 @@ public class HostCapture {
     
     public void startHostCapture() {
             String dev_config = Config.getDevice();
-            Sniffer sniffer;
             
             Runtime.getRuntime().addShutdownHook(new Thread(new HostCaptureShutDownHook(sniffer_threads_list,processQueuePacketThread)) );
             initUI();
